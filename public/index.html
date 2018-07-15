@@ -35,8 +35,8 @@
 	  </div>
 	</div>
 	<div class="container" id="alertContainer"> <!-- Below is sample data which shall be removed -->
-		<div class="alert alert-success alert-dismissible fade show" role="alert">
-			You are added to <strong>general</strong> successfully!
+		<div class="alert alert-success alert-dismissible fade show" role="alert" id="channelAlert">
+		
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
@@ -74,21 +74,21 @@
 			</div>
 		</div>
 		<div id="chatContainer" class="row"> <!-- Below is sample data which shall be removed -->
-			<div class="col-12">
+			<!-- <div class="col-12">
 				<div class="card received-message">
 					<div class="card-body">
 						<p class="card-text">Fred : I am good</p>
 					</div>
 				</div>
-			</div>
-			<div class="col-12">
+			</div>-->
+			<div class="col-12 sent" id="sentMessage">
 				<div class="card sent-message">
 					<div class="card-body">
 						<p class="card-text">Me : How is everyone today</p>
 					</div>
 				</div>
-			</div>
-			<div class="col-12">
+			</div> 
+			<div class="col-12 system" id="systemMessage">
 				<div class="card received-message">
 					<div class="card-body">
 						<p class="card-text">System : Welcome John !!</p>
@@ -104,6 +104,9 @@
 	<script type="text/javascript">
 		$(window).on('load',function(){
 			$('#exampleModal').modal();
+			$('#channelAlert').hide();
+			$('#systemMessage').hide();
+			$('#sentMessage').hide();
 		});
 
 		const socket = io('http://localhost:3000');
@@ -129,11 +132,16 @@
 
 			socket.emit('register', { username, channels });
 
-			socket.on('welcomeMessage', onWelcomeMessageReceived);
+			socket.on('welcomeMessage', (message)=>{
+				onWelcomeMessageReceived(message);
+
+			});
 
 			socket.on('newMessage', onNewMessageReceived);
 
-			socket.on('addedToChannel', onAddedToNewChannelReceived);
+			socket.on('addedToChannel', (message)=>{
+				onAddedToNewChannelReceived(message);
+			});
 
 			socket.on('removedFromChannel', onRemovedFromChannelReceived);
 		});
