@@ -1,14 +1,15 @@
-
 function bootstrapSocketServer(io) {
 	io.on('connection', (socket) => {
 		socket.on('register', (message) => {
 
 			let rooms = message.channels;
-			rooms.map(function (room) {
-				socket.join(room, () => {
-					
-				});
-			});
+			if(rooms !== '' ){
+    			rooms.map(function (room) {
+    				socket.join(room, () => {
+    					
+    				});
+    			});
+			}
 			
 			socket.emit('welcomeMessage', "Welcome " + message.username);
 			let channel = {};
