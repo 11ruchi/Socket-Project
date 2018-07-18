@@ -1,6 +1,7 @@
 body {
 	margin-top: 20px;
 	background-color: lightgrey;
+	font-family: 'Ubuntu';
 }
 
 form {
@@ -19,9 +20,61 @@ h4 {
 	margin-top: 10px;
 }
 
-.received-message {
-	background-color: #8AC6D0;
+.message{
+	margin-bottom: 3px;
+   
 }
-.sent-message {
-	background-color: #4DAA57;
+
+.register-title{
+	color: #ffffff;
+	margin: auto;
+	font-size: 28px;
+}
+
+.color-grey{
+	font-size: 20px;
+	color: #a29d9d;
+}
+
+.register-header{
+	background: rebeccapurple;
+}
+
+.m-auto{
+	margin: auto;
+}
+
+.reg-btn{
+	color: white;
+    background: rebeccapurple;
+    font-size: 20px;
+}
+
+.modal-dialog{
+	    padding: 20px;
+}
+
+.chat-header{
+	background: rebeccapurple;
+	color: #ffffff;
+	text-align: center;
+	
+}
+
+input:focus,textarea:focus{
+	outline-color: #663399 !important;
+	box-shadow: unset  !important;
+    border-color:#663399 !important;
+}
+
+.channel-btn-grp{
+	text-align: center;
+}
+
+.channel-btn-font{
+	font-size: 20px;
+}
+
+.alert {
+margin-bottom: 3px;
 }
