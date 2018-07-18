@@ -1,54 +1,63 @@
+
 function bootstrapSocketServer(io) {
 	io.on('connection', (socket) => {
-		socket.on('register',(message) => {
+		socket.on('register', (message) => {
+
 			let rooms = message.channels;
-			rooms.map(function(room){
+			rooms.map(function (room) {
 				socket.join(room, () => {
 					
-					console.log( Object.keys(socket.rooms)); // [ <socket.id>, 'room 237' ]
-					
-				  });
-			});
-			socket.emit('welcomeMessage',message);
-			socket.emit('addedToChannel',message.channels);
-					
-		});
-
-		socket.on('joinChannel',(message) => {
-
-			let rooms = message;
-			rooms.map(function(room){
-				socket.join(room, () => {
-					let channels = Object.keys(socket.rooms);
-					if(channels.length  > 0){
-						channels.pop();
-					}
-			console.log(channels);
-			socket.emit('addedToChannel',channels);
-				  });
+				});
 			});
 			
-			
+			socket.emit('welcomeMessage', "Welcome " + message.username);
+			let channel = {};
+			channel.channel = message.channels;
+			socket.emit('addedToChannel', channel);
+
+
 		});
 
-		socket.on('leaveChannel',(message) => {
+		socket.on('joinChannel', (room) => {
 
-			let rooms = message;
-			console.log('leave rooms',rooms);
-			rooms.map(function(room){
-				socket.leave(room, () => {
-					
-				  });
+
+			socket.join(room.channel, () => {
+				let channels = Object.keys(socket.rooms);
+				if (channels.length > 0) {
+					channels.pop();
+				}
+				
+				let channel = {};
+				channel.channel = room.channel;
+				socket.emit('addedToChannel', channel);
 			});
-			let channels = Object.keys(socket.rooms);
-			if(channels.length  > 0){
-				channels.pop();
-			}
-			console.log(channels);
-			socket.emit('removedFromChannel',channels);
-			
+
+
+
 		});
-		
+
+		socket.on('leaveChannel', (room) => {
+
+
+			socket.leave(room.channel, () => {
+				let channels = Object.keys(socket.rooms);
+				if (channels.length > 0) {
+					channels.pop();
+				}
+				
+				let channel = {};
+				channel.channel = room.channel;
+				socket.emit('removedFromChannel', channel);
+			});
+
+
+		});
+
+		socket.on('message', (message) => {
+			socket.broadcast.to(message.channel).emit('newMessage', message);
+
+		});
+
 	});
 }
 
