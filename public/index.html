@@ -1,100 +1,97 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Socket.IO Chat</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
 </head>
+
 <body>
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Register</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-		    <form>
-	          <div class="form-group">
-	            <label for="username" class="col-form-label">Username:</label>
-	            <input type="text" class="form-control" id="username">
-	          </div>
-	          <div class="form-group">
-	            <label for="channels" class="col-form-label">Channels (comma separated) :</label>
-	            <input type="text" class="form-control" id="channels">
-	          </div>
-	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<div class="container" id="alertContainer"> <!-- Below is sample data which shall be removed -->
-		<div class="alert alert-success alert-dismissible fade show" role="alert" id="channelAlert">
-		
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header register-header">
+					<h5 class="modal-title register-title" id="exampleModalLabel">Chat Registration</h5>
+
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="username" class="col-form-label color-grey">Username:</label>
+							<input type="text" class="form-control" id="username" placeHolder='Username*'>
+						</div>
+						<div class="form-group">
+							<label for="channels" class="col-form-label color-grey">Channels (comma separated) :</label>
+							<input type="text" class="form-control" id="channels" placeHolder='Channels'>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer m-auto">
+					<button type="button " class="btn reg-btn" data-dismiss="modal">Register</button>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-12 col-md-6">
-				<h4>Start sending messages..</h4>
-				<form>
-					<div class="form-group">
-						<label for="channel">Channel</label>
-						<input id="channel" placeholder="Type your channel" class="form-control" />
+	<div class="container " id="alertContainer">
+		<!-- Below is sample data which shall be removed -->
+
+	</div>
+	<div class="container ">
+		<div class="row ">
+			<div class="col-12 col-md-6 mt-1">
+				<div class="card" >
+					<div class="card-header chat-header">
+						<h4>Start Chatting !!!!!</h4>
 					</div>
-					<div class="form-group">
-						<label for="message">Message</label>
-						<textarea id="message" placeholder="Type your message" class="form-control"></textarea>
+					<div class="card-body">
+						<form>
+							<div class="form-group">
+								<label for="channel" class="color-grey">Channel</label>
+								<input id="channel" placeholder="Type your channel" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="message" class="color-grey">Message</label>
+								<textarea id="message" placeholder="Type your message" class="form-control "></textarea>
+							</div>
+							<button class="btn btn-primary reg-btn" type="submit">Submit</button>
+						</form>
 					</div>
-					<button class="btn btn-primary" type="submit">Submit</button>
-				</form>
+				</div>
 			</div>
-			<div class="col-12 col-md-6">
-				<h4>Join/Start new channels..</h4>
-				<form>
-					<div class="form-group">
-						<label for="newchannel">Channel</label>
-						<input id="newchannel" placeholder="Type your channel" class="form-control" list="channelsList"/>
-						<datalist id="channelsList">
-							<option>general</option> <!-- This is sample data which shall be removed -->
-						</datalist>
+			<div class="col-12 col-md-6 mt-1">
+				<div class="card" style="height:100%">
+					<div class="card-header chat-header">
+						<h4>Join/Start new channels..</h4>
 					</div>
-					<button id="joinChannel" class="btn btn-success" type="button">Join</button>
-					<button id="leaveChannel" class="btn btn-danger" type="button">Leave</button>
-				</form>
+					<div class="card-body">
+						<form>
+							<div class="form-group">
+								<label for="newchannel " class="color-grey">Channel</label>
+								<input id="newchannel" placeholder="Type your channel" class="form-control" list="channelsList" />
+								<datalist id="channelsList">
+
+								</datalist>
+							
+							</div>
+								<div class="channel-btn-grp">
+									<button id="joinChannel" class="btn btn-success channel-btn-font" type="button">Join</button>
+									<button id="leaveChannel" class="btn btn-danger channel-btn-font" type="button">Leave</button>
+								</div>
+
+
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div id="chatContainer" class="row"> <!-- Below is sample data which shall be removed -->
-			<!-- <div class="col-12">
-				<div class="card received-message">
-					<div class="card-body">
-						<p class="card-text">Fred : I am good</p>
-					</div>
-				</div>
-			</div>-->
-			<div class="col-12 sent" id="sentMessage">
-				<div class="card sent-message">
-					<div class="card-body">
-						<p class="card-text">Me : How is everyone today</p>
-					</div>
-				</div>
-			</div> 
-			<div class="col-12 system" id="systemMessage">
-				<div class="card received-message">
-					<div class="card-body">
-						<p class="card-text">System : Welcome John !!</p>
-					</div>
-				</div>
-			</div>
+		<div id="chatContainer" class="row ">
+			<!-- Below is sample data which shall be removed -->
+
+
 		</div>
 	</div>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -102,11 +99,14 @@
 	<script type="text/javascript" src="/socket.io-client/dist/socket.io.js"></script>
 	<script type="text/javascript" src="/js/script.js"></script>
 	<script type="text/javascript">
-		$(window).on('load',function(){
-			$('#exampleModal').modal();
-			$('#channelAlert').hide();
-			$('#systemMessage').hide();
-			$('#sentMessage').hide();
+		$(window).on('load', function () {
+			$('#exampleModal').modal({
+				'keyboard': false,
+				'backdrop': 'static'
+
+
+			});
+
 		});
 
 		const socket = io('http://localhost:3000');
@@ -132,19 +132,24 @@
 
 			socket.emit('register', { username, channels });
 
-			socket.on('welcomeMessage', (message)=>{
+			socket.on('welcomeMessage', (message) => {
 				onWelcomeMessageReceived(message);
 
 			});
 
-			socket.on('newMessage', onNewMessageReceived);
+			socket.on('newMessage', (message) => {
+				onNewMessageReceived(message);
+			});
 
-			socket.on('addedToChannel', (message)=>{
+			socket.on('addedToChannel', (message) => {
 				onAddedToNewChannelReceived(message);
 			});
 
-			socket.on('removedFromChannel', onRemovedFromChannelReceived);
+			socket.on('removedFromChannel', (message) => {
+				onRemovedFromChannelReceived(message);
+			});
 		});
-  </script>
+	</script>
 </body>
+
 </html>
