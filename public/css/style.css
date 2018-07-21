@@ -78,3 +78,18 @@ input:focus,textarea:focus{
 .alert {
 margin-bottom: 3px;
 }
+
+.banner{
+	text-align: center;
+	border-radius: 5px;
+	background-color: rebeccapurple;
+	margin-bottom: 3px;
+	
+}
+
+.banner span{
+	color: white;
+    font-size: 45px;
+}
+
+
