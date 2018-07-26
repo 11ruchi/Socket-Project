@@ -35,6 +35,7 @@ function sendMessage(event, socket) {
 	channelMessage.username = username;
 	socket.emit('message', channelMessage);
 	chatContainer.insertBefore(div, chatContainer.childNodes[0]);
+	document.getElementById('message').value ='';
 }
 
 function createErrorLabel(message) {
