@@ -2,6 +2,9 @@ function addRooms(rooms, socket) {
 	if (rooms !== '') {
 		rooms.map(function (room) {
 			socket.join(room, () => {
+				let channel = {};
+				channel.channel = message.channels;
+				socket.emit('addedToChannel', channel);
 			});
 		});
 	}
@@ -10,11 +13,9 @@ function bootstrapSocketServer(io) {
 	io.on('connection', (socket) => {
 		socket.on('register', (message) => {
 			let rooms = message.channels;
-			addRooms(rooms, socket);
 			socket.emit('welcomeMessage', 'Welcome ' + message.username);
-			let channel = {};
-			channel.channel = message.channels;
-			socket.emit('addedToChannel', channel);
+			addRooms(rooms, socket);
+				
 		});
 
 		socket.on('joinChannel', (room) => {
