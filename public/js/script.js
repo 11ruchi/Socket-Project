@@ -4,6 +4,21 @@ function sendMessage(event, socket) {
 	let message = document.getElementById('message').value;
 	let username = document.getElementById('username').value;
 	let channel = document.getElementById('channel').value;
+	let chatError = document.getElementById('chatError');
+	if (chatError != null) {
+		chatError.innerHTML = '';
+		if (channel == '') {
+			chatError.appendChild(createErrorLabel('Please select the channel'));
+			chatError.style.display = "block";
+			return;
+		}
+		if (message == '') {
+			chatError.appendChild(createErrorLabel('Please enter the message'));
+			chatError.style.display = "block";
+			return;
+		}
+		chatError.style.display = "none";
+	}
 	var div = document.createElement('div');
 	div.classList.add('col-12', 'message');
 	div.innerHTML = `	
@@ -22,10 +37,16 @@ function sendMessage(event, socket) {
 	chatContainer.insertBefore(div, chatContainer.childNodes[0]);
 }
 
+function createErrorLabel(message) {
+	let label = document.createElement('label');
+	let text = document.createTextNode(message);
+	label.appendChild(text);
+	return label
+}
+
 function joinChannel(event, socket) {
 	event.preventDefault();
 	let channelsInpt = document.getElementById('newchannel').value;
-	console.log("add channel", channelsInpt);
 	let channelMessage = {};
 	channelMessage.channel = channelsInpt;
 	socket.emit('joinChannel', channelMessage);
@@ -35,17 +56,15 @@ function joinChannel(event, socket) {
 function leaveChannel(event, socket) {
 	event.preventDefault();
 	let channelsInpt = document.getElementById('newchannel').value;
-	console.log("add channel", channelsInpt);
 	let channelMessage = {};
 	channelMessage.channel = channelsInpt;
 	socket.emit('leaveChannel', channelMessage);
 }
 
 function onWelcomeMessageReceived(message) {
-	console.log('mess', message);
 	let chatContainer = document.getElementById('chatContainer');
 	var div = document.createElement('div');
-	div.classList.add('col-12','message');
+	div.classList.add('col-12', 'message');
 	div.innerHTML = `
 				<div class="card alert-primary">
 					<div class="card-body">
@@ -60,7 +79,7 @@ function onWelcomeMessageReceived(message) {
 function onNewMessageReceived(message) {
 	let chatContainer = document.getElementById('chatContainer');
 	var div = document.createElement('div');
-	div.classList.add('col-12','message');
+	div.classList.add('col-12', 'message');
 	div.innerHTML = `
 				<div class="card alert-success">
 					<div class="card-body">
@@ -72,30 +91,32 @@ function onNewMessageReceived(message) {
 }
 
 function onAddedToNewChannelReceived(message) {
-	let divMessage =`You are added to <strong>${message.channel}</strong> successfully!`;
-	buildChannelsHTML(message, true,divMessage);
+	if (message.channel.length > 0) {
+		let divMessage = `You are added to <strong>${message.channel}</strong> successfully!`;
+		buildChannelsHTML(message, true, divMessage);
+	}
+
 }
 
 function onRemovedFromChannelReceived(message) {
-	let divMessage =`You are removed from <strong>${message.channel}</strong> successfully!`;
-	buildChannelsHTML(message, false,divMessage);
+	let divMessage = `You are removed from <strong>${message.channel}</strong> successfully!`;
+	buildChannelsHTML(message, false, divMessage);
 
 
 }
 
-function buildChannelsHTML(message, isAdd,divMessage) {
-	console.log('mess', message);
-	var div = document.createElement('div');
+function buildChannelsHTML(message, isAdd, divMessage) {
+	let div = document.createElement('div');
 	let alertStyle = 'alert-danger';
-	if(isAdd){
+	if (isAdd) {
 		alertStyle = 'alert-success';
 	}
-	var att = document.createAttribute("role");
+	let att = document.createAttribute("role");
 	att.value = "alert";
 	div.setAttributeNode(att);
-	div.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show',alertStyle);
+	div.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show', alertStyle);
 	div.innerHTML = `
-	<div >`+divMessage+`		
+	<div >`+ divMessage + `		
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
@@ -110,9 +131,7 @@ function buildChannelsHTML(message, isAdd,divMessage) {
 		if (Array.isArray(message.channel)) {
 			channeList.innerHTML = '';
 			message.channel.map(function (value) {
-				options += `
-								<option>${value}</option>
-							` ;
+				options += `<option>${value}</option>`;
 			});
 			channeList.innerHTML = options;
 		} else {
@@ -125,8 +144,6 @@ function buildChannelsHTML(message, isAdd,divMessage) {
 				remSelOpt(message.channel, channeList);
 			}
 		}
-
-
 		document.getElementById('newchannel').value = '';
 	}
 
