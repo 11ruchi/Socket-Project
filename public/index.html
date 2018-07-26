@@ -19,6 +19,7 @@
 
 				</div>
 				<div class="modal-body">
+					<div id='loginError' class="alert alert-danger" role="alert"></div>
 					<form>
 						<div class="form-group">
 							<label for="username" class="col-form-label color-grey">Username:</label>
@@ -31,13 +32,10 @@
 					</form>
 				</div>
 				<div class="modal-footer m-auto">
-					<button type="button " class="btn reg-btn" data-dismiss="modal">Register</button>
+					<button type="button " id="register" class="btn reg-btn" >Register</button>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="container banner">
-		<span>Friends Chat</span>
 	</div>
 	<div class="container " id="alertContainer">
 		<!-- Below is sample data which shall be removed -->
@@ -46,19 +44,21 @@
 	<div class="container ">
 		<div class="row ">
 			<div class="col-12 col-md-6 mt-1">
+				
 				<div class="card" >
 					<div class="card-header chat-header">
 						<h4>Start Chatting !!!!!</h4>
 					</div>
 					<div class="card-body">
+						<div id="chatError" class="alert alert-danger" role="alert"></div>
 						<form>
 							<div class="form-group">
 								<label for="channel" class="color-grey">Channel</label>
-								<input id="channel" placeholder="Type your channel" class="form-control" />
+								<input id="channel" placeholder="Type your channel" class="form-control"  />
 							</div>
 							<div class="form-group">
 								<label for="message" class="color-grey">Message</label>
-								<textarea id="message" placeholder="Type your message" class="form-control "></textarea>
+								<textarea id="message" placeholder="Type your message" class="form-control " 	></textarea>
 							</div>
 							<button class="btn btn-primary reg-btn" type="submit">Submit</button>
 						</form>
@@ -109,6 +109,8 @@
 
 
 			});
+			 document.getElementById('chatError').style.display='none';
+			 document.getElementById('loginError').style.display='none';
 
 		});
 
@@ -126,10 +128,19 @@
 			leaveChannel(event, socket);
 		});
 
-		$('#exampleModal').on('hide.bs.modal', () => {
+		$('#register').on('click', () => {
 			const usernameInpt = document.getElementById('username').value;
 			const channelsInpt = document.getElementById('channels').value;
-
+			let loginErr =  document.getElementById('loginError');
+			loginErr.innerHTML = '';
+			if(usernameInpt == ''){
+				loginErr.appendChild(createErrorLabel('Please enter the username'));
+				loginErr.style.display = "block";
+				$('#exampleModal').show();
+				return;
+			}
+			$('#exampleModal').modal('hide');
+			
 			const username = usernameInpt === '' ? 'Anonymous' : usernameInpt;
 			const channels = channelsInpt === '' ? [] : channelsInpt.split(',');
 
