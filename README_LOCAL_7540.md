@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Socket.IO Chat Assignment
 
 ## Objective
@@ -100,7 +99,3 @@ The Objective of this assignment is to work with Javascript on both client and s
  6. Evaluation will take around 2 mins to complete after which you need to refresh your browser and get the updated status  
  7. Watch out for your total score and detailed status on each test and eslint errors in the coloured blocks on the screen  
  8. Fix failing test cases as well as eslint errors and re-submit your solution until you get 100%  
-=======
-# Socket-Project
-Socket Assignment FSD
->>>>>>> 6d254c42decb6999d0b44f60d8abc4533decdbd3
